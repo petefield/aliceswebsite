@@ -1,0 +1,110 @@
+﻿@page "/view/{videoId}"
+@attribute [Authorize]
+
+@inject DefaultHttpClient httpClient
+@inject IApiAuthenticationStateProvider auth
+
+@using AlicesWebsite.Shared;
+@using AlicesWebsite.Shared.Accounts;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization
+@using Newtonsoft.Json;
+@using System.Security.Claims;
+@using System.Security.Principal;
+
+<PageTitle>Video</PageTitle>
+
+<div class="row">
+    <div class="col-12">
+        <div style="text-align:center; font-size:8em;">
+            <Rainbow  Title="VIDEO" Colours="blue, orange"></Rainbow>
+        </div>
+            <video controls>
+            <source src="./videos/test.mp4" type="video/mp4">
+            </video>
+     </div>
+    </div>
+<div class="row" style="margin-bottom:1.5em">
+    <div class="col-10">
+        <h2>
+            Comments         
+               
+        </h2>
+    </div>
+    <div class="col-3">
+        @if (!showCommentEditor)
+        {
+            <button @onclick="addComment" class="btn  btn-success">ADD COMMENT!</button>
+        }
+    </div>
+</div>
+
+@if (showCommentEditor)
+{
+    <div class="commentEditor comment row  d-flex ">
+        <div class="col-2">
+            <span class="user">@currentUser.FirstName @currentUser.LastName:</span>
+                <small>@DateTime.UtcNow</small>
+        </div>
+        <div class="col-8">
+            <textarea @bind="newCommentText" placeholder="Enter your comment"></textarea>
+            </div>
+        <div class="col-2">
+            <button @onclick="saveComment" class="btn btn-primary btn-small ">Save</button>
+        </div>
+    </div>
+}
+
+@if (Comments?.Any() ?? false)
+{
+    @foreach (var comment in Comments)
+    {
+        <div class="comment row">
+            <div class="col-2">
+                <span class="user">@comment.user.FirstName @comment.user.LastName: </span>
+                <small>@comment.posted:</small>
+            </div>
+            <div class="col-10">
+                <p>@comment.message</p>
+            </div>
+        </div>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public string? videoId { get; set; }
+
+    private bool showCommentEditor = false;
+    private string newCommentText = string.Empty;
+    private User currentUser;
+    private List<CommentResponse>? Comments = new() { };
+
+    protected override async Task OnInitializedAsync()
+    {
+        currentUser = await auth.GetCurrentUser();
+        Comments = await httpClient.Get<List<CommentResponse>>("/api/comments");
+        Comments = Comments.OrderByDescending(x => x.posted).ToList();
+    }
+
+    private void addComment()
+    {
+        showCommentEditor = true;
+    }
+
+    private async Task saveComment()
+    {
+        var commentRequest = new CommentRequest(Guid.NewGuid(), newCommentText);
+        var result = await httpClient.Post<CommentRequest, CommentResponse>("/api/comments", commentRequest);
+
+        result.Switch(
+            cr => {
+                Comments.Insert(0,cr);
+                newCommentText = string.Empty;
+                showCommentEditor = false;
+            },
+            response => Console.WriteLine(response)
+        );
+    }
+}

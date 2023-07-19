@@ -1,0 +1,54 @@
+﻿@page "/login"
+@layout CleanLayout
+
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Text.Json;
+@using AlicesWebsite.Shared;
+@inject HttpClient httpClient
+@inject IApiAuthenticationStateProvider auth;
+
+<main class="form-signin w-100 m-auto">
+            <form>
+
+                <div class="form">
+                    <input data-lpignore="true" type="email" @bind="userName" class="form-control" placeholder="name@example.com">
+                </div>
+                <div class="form">
+                    <input type="password" @bind="password" class="form-control" id="floatingPassword" placeholder="Password">
+                </div>
+
+                <button class="btn btn-primary w-100 py-2" @onclick="UserLogin">Sign in</button>
+            </form>
+            @if (loginFailed)
+            {
+                <div class="alert alert-warning" role="alert">
+
+                    <p>You entered the wrong user name or password. Please try again.</p>
+                </div>
+            }
+        </main>
+
+@code {
+
+    private string password = string.Empty;
+    private string userName = string.Empty;
+
+    bool loginFailed = false;
+
+    public async Task UserLogin()
+    {
+        await auth.SetTokenAsync(null);
+        loginFailed = false;
+
+        var result = await httpClient.Post<LoginRequest, LoginResponse>("api/accounts/login", new LoginRequest(userName, password));
+
+        await result.Match(
+            async result => await auth.SetTokenAsync(new Token(result.Token, result.ExpirationDate)),
+            async _ =>
+            {
+                loginFailed = true;
+                await auth.ClearToken();
+            }
+        );
+    }
+}

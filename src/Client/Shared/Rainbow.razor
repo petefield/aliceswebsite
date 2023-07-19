@@ -1,0 +1,30 @@
+﻿<h1 style="font-family:Ysabeau;">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        var i = 0;
+        @foreach (var c in Title)
+        {
+            <span style="color:@colourList[i]">@c</span>
+            if (c != ' ') i++;
+            if (i > colourList.Length - 1) i = 0;
+        }
+    }
+
+</h1>
+
+        @code {
+        [Parameter]
+        public string? Title { get; set; } = string.Empty;
+
+        [Parameter]
+        public string? Colours { get; set; } = string.Empty;
+
+        private string[] colourList = new string[0]{};
+
+        protected override void OnParametersSet()
+        {
+            colourList = string.IsNullOrEmpty(Colours)
+                ? new string[0] { }
+                : Colours.Split(',');
+        }
+}

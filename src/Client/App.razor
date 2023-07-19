@@ -1,0 +1,20 @@
+﻿@using AlicesWebsite.Client.Pages
+@using Microsoft.AspNetCore.Components.Authorization
+
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+
+         <AuthorizeRouteView RouteData="@routeData">
+            <NotAuthorized>
+                <Login />
+            </NotAuthorized>
+        </AuthorizeRouteView>
+
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p role="alert">Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>

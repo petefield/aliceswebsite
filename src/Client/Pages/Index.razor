@@ -1,0 +1,61 @@
+﻿@page "/"
+@attribute [Authorize]
+
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager navman;
+
+<div class="row">
+    <div class="col-12">
+        <div style="text-align:center; font-size:8em;">
+            <Rainbow Title="FIELD FAMILY LAUGHS" Colours="blue, orange"></Rainbow>
+        </div>
+    </div>
+    </div>
+<div class="row">
+
+    @foreach(var video in Videos)
+    {
+        <div class="col-4 thumb">
+            <a class="thumbnail" @onclick="() => Nav(video.Id)">
+                <img class="img-responsive" src="@video.Thumbnail" alt="">
+                <p>@video.Description</p>
+            </a>
+        </div>
+    }
+</div>
+
+@code {
+    public IEnumerable<Video> Videos { get; set; } = Enumerable.Empty<Video>();
+
+    protected override void OnInitialized()
+    {
+        Videos = new List<Video>
+        {
+            new Video(0, "https://placehold.co/300x200", "cute!"),
+            new Video(1, "https://placehold.co/300x200", "Yes Alice, you are!"),
+            new Video(2, "https://placehold.co/300x200", "silence this is because I am not really real ;nobody!Ha Ha."),
+            new Video(3, "https://placehold.co/300x200", "Daddy;you are strange.!"),
+            new Video(4, "https://placehold.co/300x200", "Boo Hoo"),
+        };
+    }
+
+    public void Nav(int id)
+    {
+        navman.NavigateTo($"./view/{id}");
+    }
+
+    public class Video
+    {
+        public int Id { get; set; }
+
+        public Video(int i, string thumbnail, string description)
+        {
+            Id = i;
+            Thumbnail = thumbnail;
+            Description = description;
+        }
+        public string Thumbnail { get; set; }
+        public string Description { get; set; }
+    }
+}

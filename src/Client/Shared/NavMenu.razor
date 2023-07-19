@@ -1,0 +1,49 @@
+﻿@using AlicesWebsite.Shared.Accounts;
+@inject IApiAuthenticationStateProvider auth;
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#" style="padding-left:12em">
+        Field Family Laughs  @if (CurrentUser != null)
+        {
+            <span> :  Hello @CurrentUser.FirstName</span> 
+        }
+    </a>
+
+         
+    <button class="navbar-toggler @NavMenuCssClass" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" @onclick="ToggleNavMenu"></span>
+    </button>
+    <div class="collapse col-12" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item ">
+                <a @onclick="Logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+@code {
+
+    public User? CurrentUser { get; set;  }
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentUser = await auth.GetCurrentUser();
+
+    }
+
+
+    private bool collapseNavMenu = false;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    public async Task Logout()
+    {
+        await auth.SetTokenAsync(null);
+    }
+}

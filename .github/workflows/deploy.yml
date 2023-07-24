@@ -64,6 +64,15 @@ jobs:
 
       - name: Update Comments Context
         run: dotnet ef database update -- --context CommentsContext --project /src/Server/AlicesWebsite.Server.csproj
+        
+      - name: deploy entity framework core migrations
+        uses: benday-inc/deploy-ef-core-migration@main
+        with:
+          path_to_directory: '.'
+          migrations_dll: 'AlicesWebsite.Server.dll'
+          migrations_namespace: 'AlicesWebsite.Server.Data'
+          startup_dll: 'AlicesWebsite.Server.dll'
+          dbcontext_class_name: 'CommentsContext'
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

@@ -53,6 +53,11 @@ jobs:
         with:
           name: .net-app
 
+      - name: Log into Azure CLI with service principal
+        uses: azure/login@v1.4.2
+        with:
+          creds: ${{ secrets.AZURECREDENTIALS }}
+
       - name: Update Comments Context
         run: dotnet ef database update -- --context CommentsContext 
 

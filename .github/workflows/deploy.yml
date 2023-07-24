@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - pf-webapp-ghatest
+name: Deploy
 
 on:
   push:
@@ -52,6 +52,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: .net-app
+
+          
+      - name : ls
+        run: ls -a
 
       - name: Log into Azure CLI with service principal
         uses: azure/login@v1.4.2

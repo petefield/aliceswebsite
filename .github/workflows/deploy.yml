@@ -62,6 +62,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURECREDENTIALS }}
         
+      - name : Show Account slots
+        run: az account show
+
       - name: deploy entity framework core migrations
         uses: benday-inc/deploy-ef-core-migration@main
         with:

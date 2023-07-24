@@ -64,8 +64,7 @@ jobs:
 
       - name: Update Comments Context
         run: dotnet ef database update -- --context CommentsContext --project /src/Server/AlicesWebsite.Server.csproj
- 
-        
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2

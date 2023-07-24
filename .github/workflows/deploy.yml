@@ -75,7 +75,6 @@ jobs:
             migrations_namespace: 'AlicesWebsite.Server.Data'
             startup_dll: 'AlicesWebsite.Server.dll'
             dbcontext_class_name: 'CommentsContext'
-  
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

@@ -61,9 +61,6 @@ jobs:
         uses: azure/login@v1.4.2
         with:
           creds: ${{ secrets.AZURECREDENTIALS }}
-
-      - name: Update Comments Context
-        run: dotnet ef database update -- --context CommentsContext --project /src/Server/AlicesWebsite.Server.csproj
         
       - name: deploy entity framework core migrations
         uses: benday-inc/deploy-ef-core-migration@main

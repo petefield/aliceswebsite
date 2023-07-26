@@ -65,7 +65,7 @@ jobs:
           migrations_dll: 'AlicesWebsite.Server.dll'
           migrations_namespace: 'AlicesWebsite.Server.Data'
           startup_dll: 'AlicesWebsite.Server.dll'
-          dbcontext_class_name: 'CommentsContext'
+          dbcontext_class_name: 'IdentityContext'
 
       - name: Deploy EF Migrations - Comments
         uses: benday-inc/deploy-ef-core-migration@main

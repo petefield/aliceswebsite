@@ -1,9 +1,11 @@
 ﻿@page "/"
 @attribute [Authorize]
 
+@using AlicesWebsite.Shared
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization
 @inject NavigationManager navman;
+@inject DefaultHttpClient httpClient
 
 <div class="row">
     <div class="col-12">
@@ -26,36 +28,16 @@
 </div>
 
 @code {
-    public IEnumerable<Video> Videos { get; set; } = Enumerable.Empty<Video>();
+    public IEnumerable<GetVideoResponse> Videos { get; set; } = Enumerable.Empty<GetVideoResponse>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        Videos = new List<Video>
-        {
-            new Video(0, "https://placehold.co/300x200", "cute!"),
-            new Video(1, "https://placehold.co/300x200", "Yes Alice, you are!"),
-            new Video(2, "https://placehold.co/300x200", "silence this is because I am not really real ;nobody!Ha Ha."),
-            new Video(3, "https://placehold.co/300x200", "Daddy;you are strange.!"),
-            new Video(4, "https://placehold.co/300x200", "Boo Hoo"),
-        };
+        Videos = await httpClient.Get<List<GetVideoResponse>>("/api/videos");
     }
 
-    public void Nav(int id)
+    public void Nav(Guid id)
     {
         navman.NavigateTo($"./view/{id}");
     }
 
-    public class Video
-    {
-        public int Id { get; set; }
-
-        public Video(int i, string thumbnail, string description)
-        {
-            Id = i;
-            Thumbnail = thumbnail;
-            Description = description;
-        }
-        public string Thumbnail { get; set; }
-        public string Description { get; set; }
-    }
 }

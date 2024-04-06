@@ -61,24 +61,6 @@ jobs:
       - name: Deploy EF Migrations - Identity
         run: dotnet ef database update --context IdentityContext --configuration Release
         
-      - name: Deploy EF Migrations - Comments
-        uses: benday-inc/deploy-ef-core-migration@main
-        with:
-            path_to_directory: '.'
-            migrations_dll: 'AlicesWebsite.Server.dll'
-            migrations_namespace: 'AlicesWebsite.Server.Data'
-            startup_dll: 'AlicesWebsite.Server.dll'
-            dbcontext_class_name: 'CommentsContext'
-            
-      - name: Deploy EF Migrations - Videos
-        uses: benday-inc/deploy-ef-core-migration@main
-        with:
-            path_to_directory: '.'
-            migrations_dll: 'AlicesWebsite.Server.dll'
-            migrations_namespace: 'AlicesWebsite.Server.Data'
-            startup_dll: 'AlicesWebsite.Server.dll'
-            dbcontext_class_name: 'VideossContext'
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2

@@ -8,7 +8,7 @@
 @inject IApiAuthenticationStateProvider auth;
 
 <main class="form-signin w-100 m-auto">
-            <form>
+            <div>
 
                 <div class="form">
                     <input data-lpignore="true" type="email" @bind="userName" class="form-control" placeholder="name@example.com">
@@ -18,7 +18,8 @@
                 </div>
 
                 <button class="btn btn-primary w-100 py-2" @onclick="UserLogin">Sign in</button>
-            </form>
+            </div>
+
             @if (loginFailed)
             {
                 <div class="alert alert-warning" role="alert">
@@ -37,17 +38,19 @@
 
     public async Task UserLogin()
     {
-        await auth.SetTokenAsync(null);
         loginFailed = false;
+     //   await auth.ClearToken();
 
         var result = await httpClient.Post<LoginRequest, LoginResponse>("api/accounts/login", new LoginRequest(userName, password));
 
         await result.Match(
-            async result => await auth.SetTokenAsync(new Token(result.Token, result.ExpirationDate)),
-            async _ =>
+            async result => {
+                await auth.SetTokenAsync(new Token(result.Token, result.ExpirationDate));
+            },
+            _ =>
             {
                 loginFailed = true;
-                await auth.ClearToken();
+                return Task.CompletedTask;
             }
         );
     }

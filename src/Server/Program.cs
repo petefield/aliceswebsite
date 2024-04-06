@@ -12,6 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<IdentityContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
 builder.Services.AddComments(builder.Configuration.GetConnectionString("sqlConnection"));
+builder.Services.AddVideos(builder.Configuration.GetConnectionString("sqlConnection"));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
   .AddEntityFrameworkStores<IdentityContext>()

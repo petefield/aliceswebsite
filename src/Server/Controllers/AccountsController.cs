@@ -1,5 +1,4 @@
-﻿using AlicesWebsite.Server;
-using AlicesWebsite.Shared.Accounts;
+﻿using AlicesWebsite.Shared.Accounts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

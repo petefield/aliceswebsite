@@ -44,7 +44,6 @@ namespace AlicesWebsite.Client
 
             }
 
-
             var user = new User(
                 userName: state.User.Claims.First(x => x.Type == "unique_name").Value,
                 email: state.User.Claims.First(x => x.Type == "unique_name").Value,

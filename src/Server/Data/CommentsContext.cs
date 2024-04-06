@@ -6,7 +6,7 @@ namespace AlicesWebsite.Server.Data
 {
     public class CommentsContext : DbContext
     {
-        public CommentsContext(DbContextOptions options) : base(options)
+        public CommentsContext(DbContextOptions<CommentsContext> options) : base(options)
         {
         }
 

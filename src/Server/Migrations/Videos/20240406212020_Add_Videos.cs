@@ -3,27 +3,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AlicesWebsite.Server.Migrations.Comments
+namespace AlicesWebsite.Server.Migrations.Videos
 {
     /// <inheritdoc />
-    public partial class AddComments : Migration
+    public partial class Add_Videos : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "Videos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Posted = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VideoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UploadedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UploadedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_Videos", x => x.Id);
                 });
         }
 
@@ -31,7 +32,7 @@ namespace AlicesWebsite.Server.Migrations.Comments
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "Videos");
         }
     }
 }

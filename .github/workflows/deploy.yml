@@ -61,7 +61,7 @@ jobs:
         
       - name: Deploy EF Migrations - Identity      
         working-directory:  ./src/Server
-        run: dotnet ef database update --context IdentityContext --configuration Release --project ./src/Server/AlicesWebsite.Server.csproj
+        run: dotnet ef database update --context IdentityContext --configuration Release 
 
 
       - name: Deploy to Azure Web App

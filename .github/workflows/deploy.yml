@@ -53,26 +53,28 @@ jobs:
         with:
           name: .net-app
 
-          
-      - name : ls
-        run: ls -a
-
       - name: Log into Azure CLI with service principal
         uses: azure/login@v1.4.2
         with:
           creds: ${{ secrets.AZURECREDENTIALS }}
         
-      - name : Show Account slots
-        run: az account show
-
-      - name: deploy entity framework core migrations
+      - name: Deploy EF Migrations - Identity
         uses: benday-inc/deploy-ef-core-migration@main
         with:
           path_to_directory: '.'
           migrations_dll: 'AlicesWebsite.Server.dll'
           migrations_namespace: 'AlicesWebsite.Server.Data'
           startup_dll: 'AlicesWebsite.Server.dll'
-          dbcontext_class_name: 'CommentsContext'
+          dbcontext_class_name: 'IdentityContext'
+
+      - name: Deploy EF Migrations - Comments
+        uses: benday-inc/deploy-ef-core-migration@main
+        with:
+            path_to_directory: '.'
+            migrations_dll: 'AlicesWebsite.Server.dll'
+            migrations_namespace: 'AlicesWebsite.Server.Data'
+            startup_dll: 'AlicesWebsite.Server.dll'
+            dbcontext_class_name: 'CommentsContext'
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

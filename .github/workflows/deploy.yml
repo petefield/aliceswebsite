@@ -62,8 +62,8 @@ jobs:
       - name: Deploy EF Migrations - Identity      
         working-directory:  ./src/Server
         run: |
-            echo ${{ secrets.EF_MIGRATIONS_CONNECTION }}
-            dotnet ef database update --context IdentityContext --configuration Release --connection ${{ secrets.EF_MIGRATIONS_CONNECTION }}
+            echo "${{ secrets.EF_MIGRATIONS_CONNECTION }}"
+            dotnet ef database update --context IdentityContext --configuration Release --connection " ${{ secrets.EF_MIGRATIONS_CONNECTION }}"
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

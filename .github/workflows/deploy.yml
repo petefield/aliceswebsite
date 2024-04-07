@@ -65,6 +65,18 @@ jobs:
             echo "${{ secrets.EF_MIGRATIONS_CONNECTION }}"
             dotnet ef database update --context IdentityContext --configuration Release --connection " ${{ secrets.EF_MIGRATIONS_CONNECTION }}"
 
+      - name: Deploy EF Migrations - Videos      
+        working-directory:  ./src/Server
+        run: |
+            echo "${{ secrets.EF_MIGRATIONS_CONNECTION }}"
+            dotnet ef database update --context VideosContext --configuration Release --connection " ${{ secrets.EF_MIGRATIONS_CONNECTION }}"
+
+      - name: Deploy EF Migrations - Comments      
+        working-directory:  ./src/Server
+        run: |
+            echo "${{ secrets.EF_MIGRATIONS_CONNECTION }}"
+            dotnet ef database update --context CommentsContext --configuration Release --connection " ${{ secrets.EF_MIGRATIONS_CONNECTION }}"
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2

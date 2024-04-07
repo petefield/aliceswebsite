@@ -81,12 +81,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'webapp-pf-fieldfamilylaughs'
-          slot-name: 'staging'
+          app-name: 'app-alices-website'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: .
-
-      - name : Swap slots
-        run: az webapp deployment slot swap -s staging -n 'webapp-pf-fieldfamilylaughs' -g rg-pf-fieldfamilylaughs
-          
-         

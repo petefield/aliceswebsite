@@ -32,7 +32,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Videos = await httpClient.Get<List<GetVideoResponse>>("/api/videos");
+        Videos = await httpClient.Get<List<GetVideoResponse>>("/api/videos") ?? new List<GetVideoResponse>();
     }
 
     public void Nav(Guid id)

@@ -1,19 +1,21 @@
 ﻿using AlicesWebsite.Server.Models;
-using AlicesWebsite.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlicesWebsite.Server.Data
 {
-    public class CommentsContext : DbContext
+    public class DataContext : DbContext
     {
-        public CommentsContext(DbContextOptions<CommentsContext> options) : base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
 
-        protected CommentsContext()
+        protected DataContext()
         {
         }
 
         public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Video> Videos { get; set; }
+
     }
 }

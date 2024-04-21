@@ -43,7 +43,7 @@
 {
     <div class="commentEditor comment row  d-flex ">
         <div class="col-2">
-            <span class="user">@currentUser.FirstName @currentUser.LastName:</span>
+            <span class="user">@currentUser!.FirstName @currentUser.LastName:</span>
                 <small>@DateTime.UtcNow</small>
         </div>
         <div class="col-8">
@@ -78,13 +78,13 @@
 
     private bool showCommentEditor = false;
     private string newCommentText = string.Empty;
-    private User currentUser;
-    private List<CommentResponse>? Comments = new() { };
+    private User? currentUser;
+    private List<CommentResponse> Comments = new() { };
 
     protected override async Task OnInitializedAsync()
     {
         currentUser = await auth.GetCurrentUser();
-        Comments = await httpClient.Get<List<CommentResponse>>("/api/comments");
+        Comments = await httpClient.Get<List<CommentResponse>>("/api/comments") ?? new List<CommentResponse>();
         Comments = Comments.OrderByDescending(x => x.posted).ToList();
     }
 

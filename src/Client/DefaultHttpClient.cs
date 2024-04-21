@@ -24,7 +24,7 @@ namespace AlicesWebsite.Client
             if (string.IsNullOrEmpty(_httpClient.DefaultRequestHeaders.Authorization?.Parameter))
             { 
                 var token = await _apiAuthenticationStateProvider.GetTokenAsync();
-                _httpClient.DefaultRequestHeaders.Add("Authorization", $"bearer {token.Value}");
+                _httpClient.DefaultRequestHeaders.Add("Authorization", $"bearer {token!.Value}");
             }
 
             var response = await _httpClient.PostAsJsonAsync(url, request);
@@ -45,10 +45,9 @@ namespace AlicesWebsite.Client
             var result = JsonSerializer.Deserialize<T>(stringContent, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             return result;
         }
-        public async Task<T> Get<T>(string url) where T : class 
+        public async Task<T?> Get<T>(string url) where T : class 
         {
             return await _httpClient.GetFromJsonAsync<T>(url);
-
         }
     }
 }

@@ -8,9 +8,9 @@ namespace AlicesWebsite.Server.Data
 {
     public class CommentsRepo : ICommentsRepo
     {
-        private readonly CommentsContext _commentsContext;
+        private readonly DataContext _commentsContext;
 
-        public CommentsRepo(CommentsContext commentsContext)
+        public CommentsRepo(DataContext commentsContext)
         {
             _commentsContext = commentsContext;
         }

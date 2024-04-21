@@ -11,8 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<IdentityContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
-builder.Services.AddComments(builder.Configuration.GetConnectionString("sqlConnection"));
-builder.Services.AddVideos(builder.Configuration.GetConnectionString("sqlConnection"));
+builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
+builder.Services.AddComments();
+builder.Services.AddVideos();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
   .AddEntityFrameworkStores<IdentityContext>()

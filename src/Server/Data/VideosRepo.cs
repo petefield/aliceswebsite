@@ -7,9 +7,9 @@ namespace AlicesWebsite.Server.Data
 {
     public class VideosRepo : IVideoRepo
     {
-        private readonly VideosContext _context;
+        private readonly DataContext _context;
 
-        public VideosRepo(VideosContext context)
+        public VideosRepo(DataContext context)
         {
             _context = context;
         }

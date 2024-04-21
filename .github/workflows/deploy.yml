@@ -28,11 +28,14 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
+      - name: install dotnet tools
+        run: dotnet tool install --global dotnet-ef --version 8.0.4
+
       - name: build migration bundle - Identity
-        run: dotnet ef migrations bundle --context IdentityContext --self-contained --verbose
+        run: dotnet ef migrations bundle --context IdentityContext --self-contained -r linux-x64 --verbose
 
       - name: build migration bundle - Data
-        run: dotnet ef migrations bundle --context DataContext --self-contained --verbose
+        run: dotnet ef migrations bundle --context DataContext --self-contained -r linux-x64 --verbose
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2

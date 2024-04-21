@@ -31,13 +31,6 @@ jobs:
       - name: install dotnet tools
         run: dotnet tool install --global dotnet-ef --version 7.0.18
 
-      - name: build migration bundle - Identity
-        working-directory: /src/Server
-        run: dotnet ef migrations bundle --context IdentityContext --self-contained -r linux-x64 --verbose
-
-      - name: build migration bundle - Data
-        run: dotnet ef migrations bundle --context DataContext --self-contained -r linux-x64 --verbose
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
@@ -69,23 +62,14 @@ jobs:
         with:
           creds: ${{ secrets.AZURECREDENTIALS }}
         
-      - name: Deploy EF Migrations - Identity      
-        working-directory:  ./src/Server
-        run: |
-            echo "${{ secrets.EF_MIGRATIONS_CONNECTION }}"
-            dotnet ef database update --context IdentityContext --configuration Release --connection " ${{ secrets.EF_MIGRATIONS_CONNECTION }}"
-
-      - name: Deploy EF Migrations - Videos      
-        working-directory:  ./src/Server
-        run: |
-            echo "${{ secrets.EF_MIGRATIONS_CONNECTION }}"
-            dotnet ef database update --context VideosContext --configuration Release --connection " ${{ secrets.EF_MIGRATIONS_CONNECTION }}"
-
-      - name: Deploy EF Migrations - Comments      
-        working-directory:  ./src/Server
-        run: |
-            echo "${{ secrets.EF_MIGRATIONS_CONNECTION }}"
-            dotnet ef database update --context CommentsContext --configuration Release --connection " ${{ secrets.EF_MIGRATIONS_CONNECTION }}"
+      - name: Deploy EF Migrations - Identity
+        uses: benday-inc/deploy-ef-core-migration@main
+        with:
+          path_to_directory: '.'
+          migrations_dll: 'AlicesWebsite.Server.dll'
+          migrations_namespace: 'AlicesWebsite.Server.Data'
+          startup_dll: 'AlicesWebsite.Server.dll'
+          dbcontext_class_name: 'IdentityContext'
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

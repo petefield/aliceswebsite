@@ -5,15 +5,17 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AlicesWebsite.Server.Data;
 using AlicesWebsite.Server;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<IdentityContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
-builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
+builder.Services.AddDbContext<IdentityContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
+builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DataConnection")));
 builder.Services.AddComments();
 builder.Services.AddVideos();
+
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
   .AddEntityFrameworkStores<IdentityContext>()
@@ -36,7 +38,21 @@ builder.Services.AddAuthentication(x => {
 });
 
 
+
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<IdentityContext>();
+    db.Database.Migrate();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
